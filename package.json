@@ -1,0 +1,53 @@
+{
+  "name": "content-pubilshing-api",
+  "private": true,
+  "packageManager": "pnpm@10.16.1",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch --import @swc-node/register/esm-register src/main.ts",
+    "start": "node --import @swc-node/register/esm-register src/main.ts",
+    "build": "tsc",
+    "contract:emit": "prisma-next contract emit",
+    "db:init": "prisma-next db init",
+    "db:update": "prisma-next db update",
+    "db:verify": "prisma-next db verify",
+    "db:seed": "tsx src/prisma/seed.ts",
+    "migration:plan": "prisma-next migration plan",
+    "migrate": "prisma-next migrate",
+    "migration:status": "prisma-next migration status",
+    "migration:show": "prisma-next migration show"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.17",
+    "@nestjs/config": "^4.0.4",
+    "@nestjs/core": "^11.1.17",
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/platform-express": "^11.1.17",
+    "@nestjs/swagger": "^11.4.6",
+    "@prisma-next/postgres": "latest",
+    "@prisma/orm-postgres": "8.0.0-rc.1",
+    "bcrypt": "^6.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "dotenv": "^17.4.2",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@prisma-next/adapter-postgres": "latest",
+    "@prisma-next/cli": "latest",
+    "@prisma-next/contract": "latest",
+    "@prisma-next/family-sql": "latest",
+    "@prisma-next/sql-contract": "latest",
+    "@prisma-next/sql-contract-ts": "latest",
+    "@prisma-next/sql-orm-client": "latest",
+    "@prisma-next/target-postgres": "latest",
+    "@swc-node/register": "^1.12.1",
+    "@swc/core": "^1.15.47",
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "^25.6.2",
+    "prisma-next": "latest",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
