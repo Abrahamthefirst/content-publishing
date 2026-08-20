@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import type { UserRepository } from "../repositories/user.repository";
+import { UserRepository } from "../repositories/user.repository";
 import { comparePassword, hashPassword } from "../../utils/password";
-import type { JwtService } from "@nestjs/jwt";
+import { JwtService } from "@nestjs/jwt";
+import type { AuthJWT } from "./types/jwt.types";
 
 @Injectable()
 export class AuthService {
@@ -25,15 +26,18 @@ export class AuthService {
       throw new NotFoundException("Invalid Credentials");
     }
 
-    const accessToken = this.jwtService.sign({
+    const payload: AuthJWT = {
       id: user.id,
       email: user.email,
-    });
+      account_type: user.type,
+    };
 
-    const refreshToken = this.jwtService.sign(
-      { id: user.id, email: user.email },
-      { secret: process.env.JWT_REFRESH_SECRET, expiresIn: "7d" },
-    );
+    const accessToken = this.jwtService.sign(payload);
+
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: process.env.JWT_REFRESH_SECRET,
+      expiresIn: "7d",
+    });
 
     return { ...user, access_token: accessToken, refresh_token: refreshToken };
   }

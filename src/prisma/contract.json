@@ -58,7 +58,7 @@
                 }
               },
               "status": {
-                "nullable": true,
+                "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
@@ -141,6 +141,16 @@
           },
           "events": {
             "fields": {
+              "actorId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sql/char@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 36
+                  }
+                }
+              },
               "articleId": {
                 "nullable": false,
                 "type": {
@@ -175,6 +185,16 @@
                   }
                 }
               },
+              "resolvedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "sql/char@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 36
+                  }
+                }
+              },
               "resolvedById": {
                 "nullable": true,
                 "type": {
@@ -198,16 +218,6 @@
                   "codecId": "pg/timestamptz@1",
                   "kind": "scalar"
                 }
-              },
-              "userId": {
-                "nullable": false,
-                "type": {
-                  "codecId": "sql/char@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "length": 36
-                  }
-                }
               }
             },
             "relations": {
@@ -230,7 +240,7 @@
                 "cardinality": "N:1",
                 "on": {
                   "localFields": [
-                    "userId"
+                    "actorId"
                   ],
                   "targetFields": [
                     "id"
@@ -244,6 +254,9 @@
             },
             "storage": {
               "fields": {
+                "actorId": {
+                  "column": "actorId"
+                },
                 "articleId": {
                   "column": "articleId"
                 },
@@ -256,6 +269,9 @@
                 "id": {
                   "column": "id"
                 },
+                "resolvedAt": {
+                  "column": "resolvedAt"
+                },
                 "resolvedById": {
                   "column": "resolvedById"
                 },
@@ -264,9 +280,6 @@
                 },
                 "updatedAt": {
                   "column": "updatedAt"
-                },
-                "userId": {
-                  "column": "userId"
                 }
               },
               "namespaceId": "public",
@@ -336,7 +349,7 @@
                     "id"
                   ],
                   "targetFields": [
-                    "userId"
+                    "actorId"
                   ]
                 },
                 "to": {
@@ -436,7 +449,7 @@
                     "value": "DRAFT"
                   },
                   "nativeType": "text",
-                  "nullable": true
+                  "nullable": false
                 },
                 "title": {
                   "codecId": "pg/text@1",
@@ -460,6 +473,14 @@
             },
             "events": {
               "columns": {
+                "actorId": {
+                  "codecId": "sql/char@1",
+                  "nativeType": "character",
+                  "nullable": false,
+                  "typeParams": {
+                    "length": 36
+                  }
+                },
                 "articleId": {
                   "codecId": "sql/char@1",
                   "nativeType": "character",
@@ -490,6 +511,14 @@
                     "length": 36
                   }
                 },
+                "resolvedAt": {
+                  "codecId": "sql/char@1",
+                  "nativeType": "character",
+                  "nullable": true,
+                  "typeParams": {
+                    "length": 36
+                  }
+                },
                 "resolvedById": {
                   "codecId": "sql/char@1",
                   "nativeType": "character",
@@ -502,7 +531,7 @@
                   "codecId": "pg/text@1",
                   "default": {
                     "kind": "literal",
-                    "value": "PENDING"
+                    "value": "DRAFTED"
                   },
                   "nativeType": "text",
                   "nullable": true
@@ -511,14 +540,6 @@
                   "codecId": "pg/timestamptz@1",
                   "nativeType": "timestamptz",
                   "nullable": false
-                },
-                "userId": {
-                  "codecId": "sql/char@1",
-                  "nativeType": "character",
-                  "nullable": false,
-                  "typeParams": {
-                    "length": 36
-                  }
                 }
               },
               "foreignKeys": [],
@@ -561,6 +582,10 @@
                 },
                 "type": {
                   "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "PENDING"
+                  },
                   "nativeType": "text",
                   "nullable": false
                 },
@@ -596,7 +621,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "3918455b8dbe4d4e11be5dada652d82e299a8e758c2a8e2efeef50ff6dddd574"
+    "storageHash": "bf20b37424f0e7a8c5149eea594c2686f8c0e246223e592562e0e3473be04141"
   },
   "execution": {
     "executionHash": "8630809eafa326eca707b65192312c6b6b3603ec0f058062fea41be05e0832f1",

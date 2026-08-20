@@ -4,7 +4,7 @@
     "module": "preserve",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

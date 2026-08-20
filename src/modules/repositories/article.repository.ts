@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../../prisma.service";
-import type { USER_ROLE } from "../user/types/user.types";
 import { parseUuid } from "../../utils/uuid";
+import type { ARTICLE_STATUS } from "../article/types/article.types";
 
 @Injectable()
-export class UserRepository {
+export class ArticleRepository {
   constructor(private prisma: PrismaService) {}
 
   async create(input: {
@@ -26,10 +26,44 @@ export class UserRepository {
       id: parseUuid(id),
     });
 
-    return article;
+    if (article) {
+      const status = article?.status as ARTICLE_STATUS;
+
+      return { ...article, status, id };
+    } else return null;
+  }
+
+  async getByUserId(userId: string) {
+    const articles = await this.prisma.entities.articles
+      .where({ authorId: parseUuid(userId) })
+      .all();
+
+    return articles;
   }
 
   async delete() {}
 
-  async updateRole() {}
+  async updateStatus(id: string, status: ARTICLE_STATUS) {
+    const article = await this.prisma.entities.articles
+      .where({ id: parseUuid(id) })
+      .update({ status: status });
+
+    return article;
+  }
+
+  async get(filters: { status?: ARTICLE_STATUS }) {
+    const query = this.filterQueryBuilder(filters);
+
+    return await query.all();
+  }
+
+  filterQueryBuilder(filters: { status?: ARTICLE_STATUS }) {
+    let query = this.prisma.entities.articles;
+
+    if (filters.status) {
+      query = query.where({ status: filters.status });
+    }
+
+    return query;
+  }
 }
