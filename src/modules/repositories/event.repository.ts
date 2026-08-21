@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../../prisma.service";
 import { parseUuid } from "../../utils/uuid";
-import type { ARTICLE_STATUS } from "../article/types/article.types";
+import { EVENT_STATUS } from "../event/types/event.types";
 
 @Injectable()
 export class EventRepository {
@@ -29,25 +29,39 @@ export class EventRepository {
 
   // In the case of updating the status of an event the actorId is almost always going to be the same as the resolvedById, and it's probably the only thing we would like to update
   // but now I a thinkign if an event should  even be updated in the first place
-  async update(input: {
-    status: EVENT_STATUS;
-    actorId: string;
-    resolvedAt: string;
-  }) {
-    // const article = await this.prisma.entities.events.create({
-    //   ...input,
-    // });
+  async update(
+    id: string,
+    input: { status?: EVENT_STATUS; resolvedAt?: string },
+  ) {
+    const event = await this.prisma.entities.events
+      .where({ id: parseUuid(id) })
+      .update({
+        status: input.status,
+        resolvedAt: parseUuid(input.resolvedAt),
+      });
+
+    return event;
   }
 
-  async getByUserId(userId: string) {
-    const articles = await this.prisma.entities.articles
-      .where({ authorId: parseUuid(userId) })
-      .all();
+  async getByUserId(
+    userId: string,
+    filters: { status?: EVENT_STATUS; actorId?: string },
+  ) {
+    const query = this.filterQueryBuilder({
+      ...filters,
+      actorId: filters.actorId ?? userId,
+    });
 
-    return articles;
+    const events = await query.all();
+    return events;
   }
 
-  async delete() {}
+  async getById(id: string) {
+    const event = await this.prisma.entities.events.first({
+      id: parseUuid(id),
+    });
+    return event;
+  }
 
   async updateStatus(id: string, status: EVENT_STATUS) {
     const article = await this.prisma.entities.articles
@@ -57,17 +71,21 @@ export class EventRepository {
     return article;
   }
 
-  async get(filters: { status?: EVENT_STATUS }) {
+  async get(filters: { status?: EVENT_STATUS; actorId?: string }) {
     const query = this.filterQueryBuilder(filters);
 
     return await query.all();
   }
 
-  filterQueryBuilder(filters: { status?: EVENT_STATUS }) {
+  filterQueryBuilder(filters: { status?: EVENT_STATUS; actorId?: string }) {
     let query = this.prisma.entities.articles;
 
     if (filters.status) {
       query = query.where({ status: filters.status });
+    }
+
+    if (filters.actorId) {
+      query = query.where({ actorId: parseUuid(filters.actorId) });
     }
 
     return query;

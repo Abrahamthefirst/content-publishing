@@ -41,7 +41,11 @@ export class ArticleRepository {
     return articles;
   }
 
-  async delete() {}
+  async delete(id: string){
+    const article = await this.prisma.entities.articles.where({id: parseUuid(id)}).delete()
+
+    return article ? article?.id : ""
+  }
 
   async updateStatus(id: string, status: ARTICLE_STATUS) {
     const article = await this.prisma.entities.articles

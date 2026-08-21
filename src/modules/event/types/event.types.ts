@@ -1,5 +1,7 @@
-enum EVENT_STATUS {
+export enum EVENT_STATUS {
   PENDING = 'PENDING',
   RESOLVED = 'RESOLVED',
   REJECTED = 'REJECTED',
 }
+
+export const EVENT_STATUS_LIST = ["PENDING", "RESOLVED", "REJECTED"] as const

@@ -1,4 +1,4 @@
-import { IsEnum, IsIn, IsString } from "class-validator";
+import { IsIn, IsString } from "class-validator";
 import {
   ARTICLE_EVENT_LIST,
   ARTICLE_STATUS_LIST,
@@ -7,7 +7,6 @@ import {
 } from "../../modules/article/types/article.types";
 
 export class ArticleReqFilter {
-
   @IsIn(ARTICLE_STATUS_LIST)
   status: ARTICLE_STATUS;
 }
@@ -21,4 +20,18 @@ export class UpdateArticleStatusReqBodyFilter {
 
   @IsIn(ARTICLE_EVENT_LIST)
   article_event: ARTICLE_EVENT;
+}
+
+export class CreateArticleBodyReqDto {
+  @IsString()
+  title: string;
+
+  @IsString()
+  authorId: string;
+
+  @IsString()
+  content: string;
+
+  @IsIn(ARTICLE_EVENT_LIST)
+  status: ARTICLE_STATUS;
 }

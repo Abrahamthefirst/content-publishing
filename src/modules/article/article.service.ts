@@ -11,12 +11,15 @@ export class ArticleService {
     private permissions: PermissionService,
   ) {}
 
-  async create(input: {
-    title: string;
-    authorId: string;
-    content: string;
-    status: string;
-  }) {
+  async create(
+    userId: string,
+    input: {
+      title: string;
+      authorId: string;
+      content: string;
+      status: string;
+    },
+  ) {
     const article = await this.articleRepository.create(input);
 
     return article;

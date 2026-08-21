@@ -152,7 +152,7 @@
                 }
               },
               "articleId": {
-                "nullable": false,
+                "nullable": true,
                 "type": {
                   "codecId": "sql/char@1",
                   "kind": "scalar",
@@ -484,7 +484,7 @@
                 "articleId": {
                   "codecId": "sql/char@1",
                   "nativeType": "character",
-                  "nullable": false,
+                  "nullable": true,
                   "typeParams": {
                     "length": 36
                   }
@@ -531,7 +531,7 @@
                   "codecId": "pg/text@1",
                   "default": {
                     "kind": "literal",
-                    "value": "DRAFTED"
+                    "value": "PENDING"
                   },
                   "nativeType": "text",
                   "nullable": true
@@ -621,7 +621,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "bf20b37424f0e7a8c5149eea594c2686f8c0e246223e592562e0e3473be04141"
+    "storageHash": "a5b4a7628e487cc86645f3922427d27eac9d58e3245eae2958f57ae742269035"
   },
   "execution": {
     "executionHash": "8630809eafa326eca707b65192312c6b6b3603ec0f058062fea41be05e0832f1",

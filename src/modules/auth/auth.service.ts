@@ -3,6 +3,8 @@ import { UserRepository } from "../repositories/user.repository";
 import { comparePassword, hashPassword } from "../../utils/password";
 import { JwtService } from "@nestjs/jwt";
 import type { AuthJWT } from "./types/jwt.types";
+import { USER_ROLE } from "../user/types/user.types";
+import { DefaultModelRow } from "@prisma/orm-postgres/orm-client";
 
 @Injectable()
 export class AuthService {
@@ -29,7 +31,7 @@ export class AuthService {
     const payload: AuthJWT = {
       id: user.id,
       email: user.email,
-      account_type: user.type,
+      account_type: user.type as USER_ROLE,
     };
 
     const accessToken = this.jwtService.sign(payload);
@@ -39,7 +41,11 @@ export class AuthService {
       expiresIn: "7d",
     });
 
-    return { ...user, access_token: accessToken, refresh_token: refreshToken };
+    if (user.password) {
+      delete (user as { password?: string }).password;
+    }
+
+    return { user, access_token: accessToken, refresh_token: refreshToken };
   }
 
   async signup(input: { email: string; password: string; username: string }) {
@@ -51,6 +57,11 @@ export class AuthService {
       password: hashedPassword,
       username,
     });
+
+    if (user.password) {
+      delete (user as { password?: string }).password;
+    }
+
     return user;
   }
 }
